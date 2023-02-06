@@ -1,7 +1,6 @@
 module Main (main) where
 
 import Control.Monad
-import Data.Int
 import Foreign.Marshal.Array
 import Foreign.Ptr
 import Foreign.Storable
@@ -9,6 +8,8 @@ import GHC.Base
 import Graphics.UI.GLUT
 import LoadShaders
 import Prelude hiding (init)
+import Core
+import GLSL (buildFragment)
 
 bufferOffset :: Integral a => a -> Ptr b
 bufferOffset = plusPtr nullPtr . fromIntegral
@@ -43,7 +44,7 @@ init = do
   program <-
     loadShaders
       [ ShaderInfo VertexShader (FileSource "./shaders/sdf.vert"),
-        ShaderInfo FragmentShader (FileSource "./shaders/sdf.frag")
+        ShaderInfo FragmentShader (ByteStringSource $ buildFragment $ circle (1.0, 1.0, 1.0) 0.5 +-> circle (0.5, 1.0, 1.0) 0.2)
       ]
   currentProgram $= Just program
 
@@ -64,9 +65,9 @@ resolutionV :: Size -> Vector2 GLfloat
 resolutionV (Size x y) = Vector2 (realToFrac x) (realToFrac y)
 
 display :: Descriptor -> DisplayCallback
-display (Descriptor triangles firstIndex numVertices (UniformLocations resolutionUL)) = do
+display (Descriptor triangles firstIndex numVertices uniformLocations) = do
   size <- get windowSize
-  uniform resolutionUL $= resolutionV size
+  uniform (resolution uniformLocations) $= resolutionV size
   clear [ColorBuffer]
   bindVertexArrayObject $= Just triangles
   drawArrays Triangles firstIndex numVertices

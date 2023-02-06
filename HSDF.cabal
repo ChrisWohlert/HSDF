@@ -25,6 +25,8 @@ source-repository head
 
 library
   exposed-modules:
+      Core
+      GLSL
       Lib
       LoadShaders
   other-modules:
@@ -37,6 +39,8 @@ library
     , OpenGL
     , base >=4.7 && <5
     , bytestring
+    , string-interpolate
+    , text
   default-language: Haskell2010
 
 executable HSDF-exe
@@ -52,6 +56,8 @@ executable HSDF-exe
     , OpenGL
     , base >=4.7 && <5
     , bytestring
+    , string-interpolate
+    , text
   default-language: Haskell2010
 
 test-suite HSDF-test
@@ -68,4 +74,6 @@ test-suite HSDF-test
     , OpenGL
     , base >=4.7 && <5
     , bytestring
+    , string-interpolate
+    , text
   default-language: Haskell2010

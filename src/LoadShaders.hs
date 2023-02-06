@@ -59,7 +59,6 @@ loadCompileAttach program (ShaderInfo shType source : infos) =
     compileAndCheck shader
     attachShader program shader
     loadCompileAttach program infos
-    print $ "Loaded shader: " <> src
 
 compileAndCheck :: Shader -> IO ()
 compileAndCheck = checked compileShader compileStatus shaderInfoLog "compile"

@@ -24,6 +24,8 @@ dependencies:
 - OpenGL
 - GLUT
 - bytestring
+- text
+- string-interpolate
 
 ghc-options:
 - -Wall
