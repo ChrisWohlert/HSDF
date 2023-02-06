@@ -22,15 +22,19 @@ instance ToSDF SDF where
             Intersection a b -> [i|max(#{sdf a}, #{sdf b})|]
 
 instance ToSDF Vec3 where
-  sdf (x, y, z) = [i|vec3(#{x}, #{y}, #{z})|]
+  sdf (Vec3 (x, y, z)) = [i|vec3(#{x}, #{y}, #{z})|]
     
 
 o :: B.ByteString
 o = "p"
 
-buildFragment :: SDF -> B.ByteString
-buildFragment model = 
-    let x = [i|
+sdfsToByteStrings :: [SDF] -> B.ByteString
+sdfsToByteStrings sdfs = Prelude.foldr (\ a acc -> [i|min(#{acc}, #{sdf a})|]) "" sdfs
+
+buildFragment :: [SDF] -> B.ByteString
+buildFragment sdfs = 
+    let world = sdfsToByteStrings sdfs
+        x = [i|
         \#version 430 core
 
         uniform vec2 iResolution;
@@ -42,7 +46,7 @@ buildFragment model =
 
         float map_the_world(in vec3 p)
         {
-            return #{sdf model};
+            return #{world};
         }
 
         vec3 calculate_normal(in vec3 p)

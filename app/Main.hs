@@ -44,7 +44,7 @@ init = do
   program <-
     loadShaders
       [ ShaderInfo VertexShader (FileSource "./shaders/sdf.vert"),
-        ShaderInfo FragmentShader (ByteStringSource $ buildFragment $ circle (1.0, 1.0, 1.0) 0.5 +-> circle (0.5, 1.0, 1.0) 0.2)
+        ShaderInfo FragmentShader (ByteStringSource $ buildFragment $ circle (Vec3 (1.0, 1.0, 1.0)) 1.5 +-> circle (Vec3 (0.5, 1.0, 1.0)) 0.2)
       ]
   currentProgram $= Just program
 
